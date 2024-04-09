@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 
 dotenv.config();
-const SECRET = process.env.JWT_SECRET;
+
 const PORT = 3000;
 
 app.use(cors());
