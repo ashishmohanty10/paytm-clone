@@ -1,6 +1,6 @@
-import express from "express";
-import { authMiddleware } from "../middleware";
-import Account from "../models/account_model";
+const express = require("express");
+const { authMiddleware } = require("../middleware");
+const Account = require("../models/account_model");
 
 const router = express.Router();
 
@@ -59,4 +59,4 @@ router.post("/transfer", authMiddleware, async (req, res) => {
   });
 });
 
-export default router;
+module.exports = router;

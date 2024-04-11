@@ -1,16 +1,16 @@
-import express from "express";
-import zod from "zod";
-import User from "../models/user_model";
-import Account from "../models/account_model";
-import { JWT_SECRET } from "../config";
-import { jwt } from "jsonwebtoken";
-import { authMiddleware } from "../middleware";
+const express = require("express");
+const zod = require("zod");
+const User = require("../models/user_model");
+const Account = require("../models/account_model");
+const { JWT_SECRET } = require("../config");
+const jwt = require("jsonwebtoken");
+const { authMiddleware } = require("../middleware");
 
 const router = express.Router();
 
 // ZOD SCHEMA FOR VALIDATION
-const signupSchema = zod.objectUtil({
-  userName: zod.string(),
+const signupSchema = zod.object({
+  userName: zod.string().email(),
   password: zod.string(),
   firstName: zod.string(),
   lastName: zod.string(),
@@ -20,25 +20,31 @@ const signupSchema = zod.objectUtil({
 router.post("/signup", async (req, res) => {
   const body = req.body;
 
-  const { succuss } = signupSchema.sageParse(req.body);
+  const { succuss } = signupSchema.safeParse(req.body);
 
   if (!succuss) {
-    return res.json({
+    return res.status(411).json({
       message: "Email already taken / Incorrect inputs",
     });
   }
 
-  const existingUser = User.findOne({
+  const existingUser = await User.findOne({
     userName: body.userName,
   });
 
   if (existingUser._id) {
     return res.json({
-      message: "Email already taken / Incorrect inputs",
+      message: " Incorrect inputs",
     });
   }
 
-  const dbUser = await User.create(body);
+  const user = await User.create({
+    username: req.body.username,
+    password: req.body.password,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+  });
+  const userId = user._id;
 
   await Account.create({
     userId,
@@ -47,7 +53,7 @@ router.post("/signup", async (req, res) => {
 
   const token = jwt.sign(
     {
-      userId: dbUser._id,
+      userId,
     },
     JWT_SECRET
   );
@@ -75,8 +81,8 @@ router.post("/signin", async (req, res) => {
   }
 
   const user = await User.findOne({
-    userName: req.body.userName,
-    password: req.body.password,
+    userName: body.userName,
+    password: body.password,
   });
 
   if (user) {
@@ -150,4 +156,4 @@ router.get("/bulk", async (req, res) => {
   });
 });
 
-export default router;
+module.exports = router;
