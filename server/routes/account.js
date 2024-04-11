@@ -4,6 +4,7 @@ import Account from "../models/account_model";
 
 const router = express.Router();
 
+// BALANCE ROUTE
 router.get("/balance", authMiddleware, async (req, res) => {
   const account = Account.findOne({
     userId: req.useId,
@@ -14,6 +15,7 @@ router.get("/balance", authMiddleware, async (req, res) => {
   });
 });
 
+// MONEY TRANFER ROUTE
 router.post("/transfer", authMiddleware, async (req, res) => {
   const session = await mongoose.startSession();
 

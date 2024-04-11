@@ -1,9 +1,11 @@
 import express from "express";
 import zod from "zod";
 import User from "../models/user_model";
+import Account from "../models/account_model";
 import { JWT_SECRET } from "../config";
 import { jwt } from "jsonwebtoken";
 import { authMiddleware } from "../middleware";
+
 const router = express.Router();
 
 // ZOD SCHEMA FOR VALIDATION
@@ -103,7 +105,7 @@ const updateUserSchema = zod.object({
 });
 
 // UPDATE ROUTE
-router.put("/update", async (req, res) => {
+router.put("/", authMiddleware, async (req, res) => {
   const { success } = updateUserSchema.safeParse(req.body);
 
   if (!success) {
