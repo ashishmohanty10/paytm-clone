@@ -18,23 +18,21 @@ const signupSchema = zod.object({
 
 // SIGNUP ROUTE
 router.post("/signup", async (req, res) => {
-  const body = req.body;
-
   const { succuss } = signupSchema.safeParse(req.body);
 
   if (!succuss) {
     return res.status(411).json({
-      message: "Email already taken / Incorrect inputs",
+      message: "Incorrect inputs",
     });
   }
 
   const existingUser = await User.findOne({
-    userName: body.userName,
+    userName: req.body.userName,
   });
 
-  if (existingUser._id) {
+  if (existingUser) {
     return res.json({
-      message: " Incorrect inputs",
+      message: " Email already taken / Incorrect inputs",
     });
   }
 
@@ -71,7 +69,6 @@ const signInSchema = zod.object({
 
 // SIGNIN ROUTE
 router.post("/signin", async (req, res) => {
-  const body = req.body;
   const { success } = signInSchema.safeParse(req.body);
 
   if (!success) {
@@ -81,8 +78,8 @@ router.post("/signin", async (req, res) => {
   }
 
   const user = await User.findOne({
-    userName: body.userName,
-    password: body.password,
+    userName: req.body.userName,
+    password: req.body.password,
   });
 
   if (user) {
@@ -96,6 +93,7 @@ router.post("/signin", async (req, res) => {
     res.json({
       token: token,
     });
+    return;
   }
 
   res.status(411).json({
