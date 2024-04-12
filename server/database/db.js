@@ -1,8 +1,18 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-
+const PORT = 3000;
 dotenv.config();
 
-const URL = process.env.MONOGODB_URL;
+const URL = process.env.MONGODB_URL;
 
-mongoose.connect(URL);
+const connectDB = async () => {
+  try {
+    await mongoose.connect(URL);
+
+    console.log(`DB connected.DB HOST!! and the Searver is running on ${PORT}`);
+  } catch (err) {
+    console.log("Error while connecting the DB", err);
+  }
+};
+
+module.exports = connectDB;
