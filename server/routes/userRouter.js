@@ -10,7 +10,7 @@ const router = express.Router();
 
 // ZOD SCHEMA FOR VALIDATION
 const signupSchema = zod.object({
-  userName: zod.string().email(),
+  username: zod.string().email(),
   password: zod.string(),
   firstName: zod.string(),
   lastName: zod.string(),
@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
   }
 
   const existingUser = await User.findOne({
-    userName: req.body.userName,
+    username: req.body.username,
   });
 
   if (existingUser) {
@@ -63,7 +63,7 @@ router.post("/signup", async (req, res) => {
 
 // ZOD VALIDATION FOR SINGIN
 const signInSchema = zod.object({
-  userName: zod.string().email(),
+  username: zod.string().email(),
   password: zod.string(),
 });
 
@@ -78,7 +78,7 @@ router.post("/signin", async (req, res) => {
   }
 
   const user = await User.findOne({
-    userName: req.body.userName,
+    username: req.body.username,
     password: req.body.password,
   });
 

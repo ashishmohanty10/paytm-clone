@@ -9,7 +9,7 @@ const connectDB = async () => {
   try {
     await mongoose.connect(URL);
 
-    console.log(`DB connected.DB HOST!! and the Searver is running on ${PORT}`);
+    console.log(`DB connected`);
   } catch (err) {
     console.log("Error while connecting the DB", err);
   }
