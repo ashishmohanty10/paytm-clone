@@ -1,7 +1,7 @@
 const express = require("express");
 const zod = require("zod");
-const User = require("../models/user_model");
-const Account = require("../models/account_model");
+const { User } = require("../models/user_model");
+const { Account } = require("../models/account_model");
 const { JWT_SECRET } = require("../config");
 const jwt = require("jsonwebtoken");
 const { authMiddleware } = require("../middleware");
@@ -18,9 +18,9 @@ const signupSchema = zod.object({
 
 // SIGNUP ROUTE
 router.post("/signup", async (req, res) => {
-  const { succuss } = signupSchema.safeParse(req.body);
+  const { success } = signupSchema.safeParse(req.body);
 
-  if (!succuss) {
+  if (!success) {
     return res.status(411).json({
       message: "Incorrect inputs",
     });
