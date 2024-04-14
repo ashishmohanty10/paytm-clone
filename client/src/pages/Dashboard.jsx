@@ -6,24 +6,25 @@ import axios from "axios";
 
 const Dashboard = () => {
   const [balance, setBalance] = useState(0);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    axios
+  const fetchData = async () => {
+    await axios
       .get("http://localhost:3000/api/v1/account/balance")
       .then((res) => {
+        console.log(res.data);
         setBalance(res.data.balance);
-      })
-      .catch((error) => {
-        setError(error.message);
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
     <div>
       <Appbar />
       <div>
-        {error && <p>Error: {error}</p>} =
         <Balance value={balance} />
         <Users />
       </div>

@@ -27,8 +27,8 @@ const Signup = () => {
       }
     );
     localStorage.setItem("token", response.data.token);
-    localStorage.removeItem("token");
     navigate("/dashboard?id=" + user._id + "&name=" + user.firstName);
+    localStorage.removeItem("token");
   };
   return (
     <div className="flex justify-center h-screen bg-slate-300">
