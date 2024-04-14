@@ -25,7 +25,7 @@ export const Users = () => {
 
   return (
     <>
-      <div className="font-bold mt-6 text-lg">Users</div>
+      <div className="mt-6 text-lg font-bold">Users</div>
       <div className="my-2">
         <input
           onChange={(e) => {
@@ -37,8 +37,8 @@ export const Users = () => {
         ></input>
       </div>
       <div>
-        {users.map((user) => (
-          <User user={user} />
+        {users.map((user, id) => (
+          <User key={id} user={user} />
         ))}
       </div>
     </>
@@ -51,7 +51,7 @@ function User({ user }) {
   return (
     <div className="flex justify-between">
       <div className="flex">
-        <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
+        <div className="flex justify-center w-12 h-12 mt-1 mr-2 rounded-full bg-slate-200">
           <div className="flex flex-col justify-center h-full text-xl">
             {user.firstName[0]}
           </div>
